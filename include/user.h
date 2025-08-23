@@ -1,15 +1,17 @@
 #ifndef USER_H
 #define USER_H
 
-typedef struct users
+typedef struct user
 {
-    char name[50];
+    char name[20];
     int age;
-    char cpf[11];
-    int has_book;
-} Users;
+    char cpf[12];
+    char has_book;
+} User;
 
 int user_options();
 void users();
+void save_user(User *new_user);
+void register_user();
 
 #endif

@@ -1,3 +1,4 @@
+#include "../include/home.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/system.h"

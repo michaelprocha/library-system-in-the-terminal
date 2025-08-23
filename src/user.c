@@ -1,6 +1,41 @@
+#include "../include/user.h"
+#include "../include/system.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/system.h"
+#include <stddef.h>
+
+void save_user(User *new_user)
+{
+    FILE *user = fopen("../data/users.txt", "a");
+    if (user == NULL)
+    {
+        printf("Erro ao abrir arquivo!\n");
+        return;
+    }
+    fprintf(user, "%s %d %s %c\n", new_user->name, new_user->age, new_user->cpf, new_user->has_book);
+    fclose(user);
+    printf("Usuário cadastrado!\n");
+    pause_screen();
+    clean_screen();
+}
+
+void register_user()
+{
+    User new_user;
+
+    printf("------------------------------------------------------\n");
+    printf("-------       Cadastrando novo usuário!      ---------\n");
+    printf("Nome: ");
+    scanf("%19s", new_user.name);
+    printf("Idade: ");
+    scanf("%d", &new_user.age);
+    printf("CPF (apenas núnmeros): ");
+    scanf("%11s", new_user.cpf);
+    new_user.has_book = 'N';
+
+    clean_screen();
+    save_user(&new_user);
+}
 
 int user_options()
 {
@@ -22,7 +57,7 @@ void users()
     switch (option)
     {
     case 1:
-        /* cadastra novo usuario */
+        register_user();
         break;
 
     case 2:
