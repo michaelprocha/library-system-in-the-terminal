@@ -1,5 +1,5 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#ifndef HOME_H
+#define HOME_H
 
 int home_screen();
 void decision(int option);
