@@ -12,7 +12,7 @@ void save_user(User *new_user)
         printf("Erro ao abrir arquivo!\n");
         return;
     }
-    fprintf(user, "%s %d %s %c\n", new_user->name, new_user->age, new_user->cpf, new_user->has_book);
+    fprintf(user, "%s %s %d %s %c\n", new_user->name, new_user->last_name, new_user->age, new_user->cpf, new_user->has_book);
     fclose(user);
     printf("Usuário cadastrado!\n");
     pause_screen();
@@ -25,8 +25,10 @@ void register_user()
 
     printf("------------------------------------------------------\n");
     printf("-------       Cadastrando novo usuário!      ---------\n");
-    printf("Nome: ");
+    printf("Primeiro nome: ");
     scanf("%19s", new_user.name);
+    printf("Sobrenome: ");
+    scanf("%19s", new_user.last_name);
     printf("Idade: ");
     scanf("%d", &new_user.age);
     printf("CPF (apenas núnmeros): ");
@@ -35,6 +37,39 @@ void register_user()
 
     clean_screen();
     save_user(&new_user);
+}
+
+void user_list()
+{
+    FILE *user = fopen("../data/users.txt", "r");
+
+    if (user == NULL)
+    {
+        printf("Erro ao abrir arquivo!\n");
+        return;
+    }
+
+    User view_user;
+
+    while (fscanf(user, "%s %s %d %s %c",
+                  view_user.name,
+                  view_user.last_name,
+                  &view_user.age,
+                  view_user.cpf,
+                  &view_user.has_book) == 5)
+    {
+
+        printf("Nome: %s %s,  Idade: %d,  CPF: %s,  Está com livro: %c\n",
+               view_user.name,
+               view_user.last_name,
+               view_user.age,
+               view_user.cpf,
+               view_user.has_book);
+    }
+
+    fclose(user);
+    pause_screen();
+    clean_screen();
 }
 
 int user_options()
@@ -53,19 +88,23 @@ int user_options()
 
 void users()
 {
-    const int option = user_options();
-    switch (option)
+    int option;
+    do
     {
-    case 1:
-        register_user();
-        break;
+        int option = user_options();
+        switch (option)
+        {
+        case 1:
+            register_user();
+            break;
 
-    case 2:
-        /* ver lista de usuarios */
-        break;
+        case 2:
+            user_list();
+            break;
 
-    default:
-        return;
-        break;
-    }
+        default:
+            return;
+            break;
+        }
+    } while (option != 3);
 }

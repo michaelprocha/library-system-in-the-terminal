@@ -4,6 +4,7 @@
 typedef struct user
 {
     char name[20];
+    char last_name[20];
     int age;
     char cpf[12];
     char has_book;
@@ -13,5 +14,6 @@ int user_options();
 void users();
 void save_user(User *new_user);
 void register_user();
+void user_list();
 
 #endif
