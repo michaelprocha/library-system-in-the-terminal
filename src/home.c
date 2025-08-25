@@ -1,6 +1,10 @@
+#include "../include/home.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/system.h"
+#include "../include/user.h"
+#include "../include/book.h"
+#include "../include/loans.h"
 
 int home_screen()
 {
@@ -19,7 +23,7 @@ void decision(int option)
     switch (option)
     {
     case 1:
-        /* Usuarios */
+        users();
         break;
 
     case 2:
