@@ -27,7 +27,7 @@ void decision(int option)
         break;
 
     case 2:
-        /* Livros */
+        books();
         break;
 
     case 3:

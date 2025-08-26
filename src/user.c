@@ -12,7 +12,12 @@ void save_user(User *new_user)
         printf("Erro ao abrir arquivo!\n");
         return;
     }
-    fprintf(user, "%s %s %d %s %c\n", new_user->name, new_user->last_name, new_user->age, new_user->cpf, new_user->has_book);
+    fprintf(user, "%s %s %d %s %c\n",
+            new_user->name,
+            new_user->last_name,
+            new_user->age,
+            new_user->cpf,
+            new_user->has_book);
     fclose(user);
     printf("Usuário cadastrado!\n");
     pause_screen();

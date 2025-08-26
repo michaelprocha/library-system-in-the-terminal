@@ -10,4 +10,10 @@ typedef struct book
     int quantity;
 } Book;
 
+int book_options();
+void books();
+void save_book(Book *new_book);
+void register_book();
+void book_list();
+
 #endif
