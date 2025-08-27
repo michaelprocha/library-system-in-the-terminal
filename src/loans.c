@@ -33,7 +33,7 @@ void save_loan(Loan *new_loan)
     char user_found = 0;
     char book_found = 0;
 
-    while (fscanf(user, "%49[^;];%d;%11[^;]; %c",
+    while (fscanf(user, "%49[^;];%d;%11[^;];%c;",
                   view_user.name, &view_user.age, view_user.cpf, &view_user.has_book) == 4)
     {
         if (strcmp(view_user.cpf, new_loan->cpf) == 0)
@@ -44,7 +44,7 @@ void save_loan(Loan *new_loan)
         }
     }
 
-    while (fscanf(book, "%49[^;];%49[^;];%d;%d;%d",
+    while (fscanf(book, "%49[^;];%49[^;];%d;%d;%d;",
                   view_book.title, view_book.author, &view_book.total_quantity,
                   &view_book.quantity, &view_book.id) == 5)
     {
@@ -73,7 +73,7 @@ void save_loan(Loan *new_loan)
         return;
     }
 
-    fprintf(loan, "%s;%s;%s;%d\n", new_loan->name, new_loan->cpf, new_loan->title, new_loan->id);
+    fprintf(loan, "%s;%s;%s;%d;", new_loan->name, new_loan->cpf, new_loan->title, new_loan->id);
     printf("Empréstimo registrado\n");
     fclose(loan);
 
@@ -82,23 +82,25 @@ void save_loan(Loan *new_loan)
     FILE *tmp_users = fopen("../data/users_tmp.txt", "w");
     FILE *tmp_books = fopen("../data/books_tmp.txt", "w");
 
-    while (fscanf(f_users, "%49[^;];%d;%11[^;]; %c",
-                  view_user.name, &view_user.age, view_user.cpf, &view_user.has_book) == 4)
+    while (fscanf(f_users, "%49[^;];%d;%11[^;];%c;",
+                   view_user.name, &view_user.age, view_user.cpf, &view_user.has_book) == 4)
     {
+
         if (strcmp(view_user.cpf, new_loan->cpf) == 0)
             view_user.has_book = new_has_book;
 
-        fprintf(tmp_users, "%s;%d;%s;%c\n", view_user.name, view_user.age, view_user.cpf, view_user.has_book);
+        fprintf(tmp_users, "%s;%d;%s;%c;",
+                view_user.name, view_user.age, view_user.cpf, view_user.has_book);
     }
 
-    while (fscanf(f_books, "%49[^;];%49[^;];%d;%d;%d",
-                  view_book.title, view_book.author, &view_book.total_quantity,
-                  &view_book.quantity, &view_book.id) == 5)
+    while (fscanf(f_books, "%49[^;];%49[^;];%d;%d;%d;",
+                  view_book.title, view_book.author,
+                  &view_book.total_quantity, &view_book.quantity, &view_book.id) == 5)
     {
         if (view_book.id == new_loan->id)
             view_book.quantity = new_quantity;
 
-        fprintf(tmp_books, "%s;%s;%d;%d;%d\n",
+        fprintf(tmp_books, "%s;%s;%d;%d;%d;",
                 view_book.title, view_book.author,
                 view_book.total_quantity, view_book.quantity, view_book.id);
     }
@@ -147,18 +149,19 @@ void loan_list()
 
     Loan view_loan;
 
-    while (fscanf(loan, "%49[^;];%49[^;];%11[^;];%d",
+    while (fscanf(loan, "%49[^;];%11[^;];%49[^;];%d;",
                   view_loan.name,
-                  view_loan.title,
                   view_loan.cpf,
+                  view_loan.title,
                   &view_loan.id) == 4)
     {
 
-        printf("Nome: %s,  Titulo do livro: %s,  CPF: %s, ID do livro: %d\n",
+        printf("Nome: %s,  CPF: %s,  Titulo do livro: %s, ID do livro: %d",
                view_loan.name,
-               view_loan.title,
                view_loan.cpf,
+               view_loan.title,
                view_loan.id);
+        printf("\n---------------------------------------------------------------------------------\n");
     }
 
     fclose(loan);

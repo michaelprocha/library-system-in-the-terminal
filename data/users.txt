@@ -1,8 +1,1 @@
-usuario 1;28;123;S
-
-
-
-
-
-
-usuario 2;39;1234;S
+pessoa 1;12;123;S;pessoa 2;8;1234;N;

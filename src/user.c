@@ -13,7 +13,7 @@ void save_user(User *new_user)
         printf("Erro ao abrir arquivo!\n");
         return;
     }
-    fprintf(user, "%s;%d;%s;%c\n",
+    fprintf(user, "%s;%d;%s;%c;",
             new_user->name,
             new_user->age,
             new_user->cpf,
@@ -56,7 +56,7 @@ void user_list()
 
     User view_user;
 
-    while (fscanf(user, "%49[^;];%d;%11[^;];%c",
+    while (fscanf(user, "%49[^;];%d;%11[^;];%c;",
                   view_user.name,
                   &view_user.age,
                   view_user.cpf,
@@ -68,7 +68,7 @@ void user_list()
                view_user.age,
                view_user.cpf,
                view_user.has_book);
-        printf("\n-----------------------------------------------------------------------------\n");
+        printf("\n-------------------------------------------------------------------------------------\n");
     }
 
     fclose(user);

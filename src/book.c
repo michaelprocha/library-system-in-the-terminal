@@ -13,7 +13,7 @@ void save_book(Book *new_book)
         printf("Erro ao abrir arquivo!\n");
         return;
     }
-    fprintf(book, "%s;%s;%d;%d;%d\n",
+    fprintf(book, "%s;%s;%d;%d;%d;",
             new_book->title,
             new_book->author,
             new_book->total_quantity,
@@ -59,7 +59,7 @@ void book_list()
 
     Book view_book;
 
-    while (fscanf(book, "%49[^;];%49[^;];%d;%d;%d",
+    while (fscanf(book, "%49[^;];%49[^;];%d;%d;%d;",
                   view_book.title,
                   view_book.author,
                   &view_book.total_quantity,
@@ -67,12 +67,13 @@ void book_list()
                   &view_book.id) == 5)
     {
 
-        printf("Titulo: %s,  Autor: %s,  Quantidade total: %d,  Quantidade disponivel: %d,  ID: %d\n",
+        printf("Titulo: %s,  Autor: %s,  Quantidade total: %d,  Quantidade disponivel: %d,  ID: %d",
                view_book.title,
                view_book.author,
                view_book.total_quantity,
                view_book.quantity,
                view_book.id);
+        printf("\n---------------------------------------------------------------------------------------\n");
     }
 
     fclose(book);
