@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 
 void save_user(User *new_user)
 {
@@ -12,9 +13,8 @@ void save_user(User *new_user)
         printf("Erro ao abrir arquivo!\n");
         return;
     }
-    fprintf(user, "%s %s %d %s %c\n",
+    fprintf(user, "%s;%d;%s;%c\n",
             new_user->name,
-            new_user->last_name,
             new_user->age,
             new_user->cpf,
             new_user->has_book);
@@ -28,12 +28,12 @@ void register_user()
 {
     User new_user;
 
+    getchar();
     printf("------------------------------------------------------\n");
     printf("-------       Cadastrando novo usuário!      ---------\n");
-    printf("Primeiro nome: ");
-    scanf("%19s", new_user.name);
-    printf("Sobrenome: ");
-    scanf("%19s", new_user.last_name);
+    printf("Nome completo: ");
+    fgets(new_user.name, 50, stdin);
+    new_user.name[strcspn(new_user.name, "\n")] = '\0';
     printf("Idade: ");
     scanf("%d", &new_user.age);
     printf("CPF (apenas núnmeros): ");
@@ -56,20 +56,19 @@ void user_list()
 
     User view_user;
 
-    while (fscanf(user, "%s %s %d %s %c",
+    while (fscanf(user, "%49[^;];%d;%11[^;];%c",
                   view_user.name,
-                  view_user.last_name,
                   &view_user.age,
                   view_user.cpf,
-                  &view_user.has_book) == 5)
+                  &view_user.has_book) == 4)
     {
 
-        printf("Nome: %s %s,  Idade: %d,  CPF: %s,  Está com livro: %c\n",
+        printf("Nome: %s,  Idade: %d,  CPF: %s, Tem livro: %c",
                view_user.name,
-               view_user.last_name,
                view_user.age,
                view_user.cpf,
                view_user.has_book);
+        printf("\n-----------------------------------------------------------------------------\n");
     }
 
     fclose(user);
