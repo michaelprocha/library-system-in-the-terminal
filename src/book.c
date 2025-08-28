@@ -67,7 +67,7 @@ void book_list()
                   &view_book.id) == 5)
     {
 
-        printf("Titulo: %s,  Autor: %s,  Quantidade total: %d,  Quantidade disponivel: %d,  ID: %d",
+        printf("Titulo: %s  Autor: %s  Quantidade total: %d  Quantidade disponivel: %d  ID: %d",
                view_book.title,
                view_book.author,
                view_book.total_quantity,

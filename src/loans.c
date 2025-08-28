@@ -32,13 +32,12 @@ void save_loan(Loan *new_loan)
     User view_user;
     Book view_book;
     int registered = 0;
-    char new_has_book = 'S';
     int new_quantity = 0;
     char user_found = 0;
     char book_found = 0;
 
-    while (fscanf(user, "%49[^;];%d;%11[^;];%c;",
-                  view_user.name, &view_user.age, view_user.cpf, &view_user.has_book) == 4)
+    while (fscanf(user, "%49[^;];%d;%11[^;];",
+                  view_user.name, &view_user.age, view_user.cpf) == 3)
     {
         if (strcmp(view_user.cpf, new_loan->cpf) == 0)
         {
@@ -85,23 +84,8 @@ void save_loan(Loan *new_loan)
     printf("Empréstimo registrado\n");
     fclose(loan);
 
-    FILE *f_users = fopen("../data/users.txt", "r");
     FILE *f_books = fopen("../data/books.txt", "r");
-    FILE *tmp_users = fopen("../data/users_tmp.txt", "w");
     FILE *tmp_books = fopen("../data/books_tmp.txt", "w");
-
-    while (fscanf(f_users, "%49[^;];%d;%11[^;];%c;",
-                  view_user.name, &view_user.age, view_user.cpf, &view_user.has_book) == 4)
-    {
-
-        if (strcmp(view_user.cpf, new_loan->cpf) == 0)
-        {
-            view_user.has_book = new_has_book;
-        }
-
-        fprintf(tmp_users, "%s;%d;%s;%c;",
-                view_user.name, view_user.age, view_user.cpf, view_user.has_book);
-    }
 
     while (fscanf(f_books, "%49[^;];%49[^;];%d;%d;%d;",
                   view_book.title, view_book.author,
@@ -117,13 +101,9 @@ void save_loan(Loan *new_loan)
                 view_book.total_quantity, view_book.quantity, view_book.id);
     }
 
-    fclose(f_users);
     fclose(f_books);
-    fclose(tmp_users);
     fclose(tmp_books);
 
-    remove("../data/users.txt");
-    rename("../data/users_tmp.txt", "../data/users.txt");
     remove("../data/books.txt");
     rename("../data/books_tmp.txt", "../data/books.txt");
 
@@ -171,7 +151,7 @@ void loan_list()
                   &view_loan.id) == 5)
     {
 
-        printf("Nome: %s,  CPF: %s,  Titulo do livro: %s,  ID do livro: %d,  ID do emprestimos: %d",
+        printf("Nome: %s  CPF: %s  Titulo do livro: %s  ID do livro: %d  ID do emprestimos: %d",
                view_loan.name,
                view_loan.cpf,
                view_loan.title,
