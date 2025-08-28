@@ -16,5 +16,6 @@ void save_loan(Loan *new_loan);
 void register_loan();
 void loan_list();
 void register_return();
+void return_book(Loan *old_loan);
 
 #endif
