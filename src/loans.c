@@ -52,7 +52,7 @@ void save_loan(Loan *new_loan)
                   view_book.title, view_book.author, &view_book.total_quantity,
                   &view_book.quantity, &view_book.id) == 5)
     {
-        if (view_book.id == new_loan->id)
+        if (view_book.id == new_loan->book_id)
         {
             book_found = 1;
             new_quantity = view_book.quantity - 1;
@@ -107,7 +107,7 @@ void save_loan(Loan *new_loan)
                   view_book.title, view_book.author,
                   &view_book.total_quantity, &view_book.quantity, &view_book.id) == 5)
     {
-        if (view_book.id == new_loan->id)
+        if (view_book.id == new_loan->book_id)
         {
             view_book.quantity = new_quantity;
         }
