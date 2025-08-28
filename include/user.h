@@ -3,11 +3,9 @@
 
 typedef struct user
 {
-    char name[20];
-    char last_name[20];
+    char name[50];
     int age;
     char cpf[12];
-    char has_book;
 } User;
 
 int user_options();

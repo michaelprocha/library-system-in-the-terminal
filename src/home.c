@@ -31,7 +31,7 @@ void decision(int option)
         break;
 
     case 3:
-        /* Empréstimos */
+        loans();
         break;
 
     default:
