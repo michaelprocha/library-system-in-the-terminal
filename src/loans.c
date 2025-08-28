@@ -13,6 +13,8 @@ void save_loan(Loan *new_loan)
     if (!loan)
     {
         printf("Erro ao abrir loans.txt\n");
+        pause_screen();
+        clean_screen();
         return;
     }
 
@@ -21,6 +23,8 @@ void save_loan(Loan *new_loan)
     if (!book || !user)
     {
         printf("Erro ao abrir arquivos\n");
+        pause_screen();
+        clean_screen();
         fclose(loan);
         return;
     }
@@ -63,17 +67,21 @@ void save_loan(Loan *new_loan)
     if (!user_found)
     {
         printf("Usuário não encontrado!\n");
+        pause_screen();
+        clean_screen();
         fclose(loan);
         return;
     }
     if (!book_found)
     {
         printf("Livro não encontrado!\n");
+        pause_screen();
+        clean_screen();
         fclose(loan);
         return;
     }
 
-    fprintf(loan, "%s;%s;%s;%d;", new_loan->name, new_loan->cpf, new_loan->title, new_loan->id);
+    fprintf(loan, "%s;%s;%s;%d;%d;", new_loan->name, new_loan->cpf, new_loan->title, new_loan->book_id, new_loan->id);
     printf("Empréstimo registrado\n");
     fclose(loan);
 
@@ -83,11 +91,13 @@ void save_loan(Loan *new_loan)
     FILE *tmp_books = fopen("../data/books_tmp.txt", "w");
 
     while (fscanf(f_users, "%49[^;];%d;%11[^;];%c;",
-                   view_user.name, &view_user.age, view_user.cpf, &view_user.has_book) == 4)
+                  view_user.name, &view_user.age, view_user.cpf, &view_user.has_book) == 4)
     {
 
         if (strcmp(view_user.cpf, new_loan->cpf) == 0)
+        {
             view_user.has_book = new_has_book;
+        }
 
         fprintf(tmp_users, "%s;%d;%s;%c;",
                 view_user.name, view_user.age, view_user.cpf, view_user.has_book);
@@ -98,7 +108,9 @@ void save_loan(Loan *new_loan)
                   &view_book.total_quantity, &view_book.quantity, &view_book.id) == 5)
     {
         if (view_book.id == new_loan->id)
+        {
             view_book.quantity = new_quantity;
+        }
 
         fprintf(tmp_books, "%s;%s;%d;%d;%d;",
                 view_book.title, view_book.author,
@@ -129,6 +141,8 @@ void register_loan()
     scanf(" %11s", new_loan.cpf);
     new_loan.cpf[sizeof new_loan.cpf - 1] = '\0';
     printf("Id livro: ");
+    scanf("%d", &new_loan.book_id);
+    printf("Id do emprestimo: ");
     scanf("%d", &new_loan.id);
     new_loan.name[0] = '\0';
     new_loan.title[0] = '\0';
@@ -149,17 +163,19 @@ void loan_list()
 
     Loan view_loan;
 
-    while (fscanf(loan, "%49[^;];%11[^;];%49[^;];%d;",
+    while (fscanf(loan, "%49[^;];%11[^;];%49[^;];%d;%d;",
                   view_loan.name,
                   view_loan.cpf,
                   view_loan.title,
-                  &view_loan.id) == 4)
+                  &view_loan.book_id,
+                  &view_loan.id) == 5)
     {
 
-        printf("Nome: %s,  CPF: %s,  Titulo do livro: %s, ID do livro: %d",
+        printf("Nome: %s,  CPF: %s,  Titulo do livro: %s,  ID do livro: %d,  ID do emprestimos: %d",
                view_loan.name,
                view_loan.cpf,
                view_loan.title,
+               view_loan.book_id,
                view_loan.id);
         printf("\n---------------------------------------------------------------------------------\n");
     }
@@ -167,6 +183,103 @@ void loan_list()
     fclose(loan);
     pause_screen();
     clean_screen();
+}
+
+void return_book(Loan *old_loan)
+{
+    FILE *loans = fopen("../data/loans.txt", "r");
+    if (!loans)
+    {
+        printf("Erro ao abrir loans.txt\n");
+        pause_screen();
+        clean_screen();
+        return;
+    }
+    FILE *f_books = fopen("../data/books.txt", "r");
+    if (!f_books)
+    {
+        printf("Erro ao abrir books.txt\n");
+        pause_screen();
+        clean_screen();
+        return;
+    }
+
+    Loan view_loan;
+    int delete_book_id;
+
+    char loan_found = 0;
+
+    while (fscanf(loans, "%49[^;];%11[^;];%49[^;];%d;%d;",
+                  view_loan.name, view_loan.cpf, &view_loan.title,
+                  &view_loan.book_id, &view_loan.id) == 5)
+    {
+        if (view_loan.id == old_loan->id)
+        {
+            loan_found = 1;
+            delete_book_id = view_loan.book_id;
+        }
+    }
+
+    if (!loan_found)
+    {
+        printf("Empréstimo não encontrado!\n");
+        pause_screen();
+        clean_screen();
+        fclose(loans);
+        return;
+    }
+
+    rewind(loans);
+
+    Book view_book;
+    FILE *tmp_loans = fopen("../data/loans_tmp.txt", "w");
+    FILE *tmp_books = fopen("../data/books_tmp.txt", "w");
+
+    while (fscanf(loans, "%49[^;];%11[^;];%49[^;];%d;%d;",
+                  view_loan.name, view_loan.cpf, &view_loan.title,
+                  &view_loan.book_id, &view_loan.id) == 5)
+    {
+        if (view_loan.id != old_loan->id)
+        {
+            fprintf(tmp_loans, "%s;%s;%s;%d;%d;", view_loan.name, view_loan.cpf, view_loan.title, view_loan.book_id, view_loan.id);
+        }
+    }
+
+    while (fscanf(f_books, "%49[^;];%49[^;];%d;%d;%d;",
+                  view_book.title, view_book.author,
+                  &view_book.total_quantity, &view_book.quantity, &view_book.id) == 5)
+    {
+        if (view_book.id == delete_book_id)
+        {
+            view_book.quantity++;
+        }
+        fprintf(tmp_books, "%s;%s;%d;%d;%d;", view_book.title, view_book.author, view_book.total_quantity, view_book.quantity, view_book.id);
+    }
+
+    fclose(loans);
+    fclose(f_books);
+    fclose(tmp_books);
+    fclose(tmp_loans);
+
+    remove("../data/loans.txt");
+    rename("../data/loans_tmp.txt", "../data/loans.txt");
+    remove("../data/books.txt");
+    rename("../data/books_tmp.txt", "../data/books.txt");
+
+    printf("Livro devolvido!\n");
+
+    pause_screen();
+    clean_screen();
+}
+
+void register_return()
+{
+    Loan old_loan;
+    printf("------------------------------------------------------\n");
+    printf("--------------    Devolvendo livro!    ---------------\n");
+    printf("Qual o ID do empréstimo: ");
+    scanf("%d", &old_loan.id);
+    return_book(&old_loan);
 }
 
 int loan_options()
@@ -197,7 +310,7 @@ void loans()
             break;
 
         case 2:
-            // register_return();
+            register_return();
             break;
 
         case 3:
