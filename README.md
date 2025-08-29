@@ -34,7 +34,7 @@ C compiler (like GCC)
 
 ### How to compile: Linux / Mac / Git Bash / Windows:
 ```bash
-gcc functions.c main.c -o main
+gcc main.c home.c system.c book.c loans.c user.c -o main
 ```
 
 ### How to run: Linux / Mac / Git Bash:
@@ -109,8 +109,9 @@ int main() {
 
     return 0;
 }
-
 ```
+
+---
 
 ## 📄 License
 This project is licensed under the MIT License. See the LICENSE file for more details.
